@@ -141,9 +141,11 @@ namespace NamNPC
             GameObject playerObject;
             public static Text mensaZombi;
             Generator mens;
+            GameObject buscCanvas;
 
             void Awake()
             {
+                buscCanvas = GameObject.Find("GameObject");
                 int numColor = Random.Range(1, 4);
                 switch (numColor)
                 {
@@ -175,7 +177,7 @@ namespace NamNPC
                 //GameObject[] AllGameObjects = GameObject.FindObjectsOfType (typeof(GameObject)) as GameObject[];
                 
 
-                //StartCoroutine("cambioEstado");
+                StartCoroutine("ResetMens");
                 StartCoroutine("CambioEstado");
             }
 
@@ -185,7 +187,6 @@ namespace NamNPC
             {
                 if (Generator.isPlaying == true)
                 {
-                    mens = gameObject.AddComponent<Generator>();
                     float minDistance = 5;
                     GameObject ciudMasCecano = null;
                     GameObject objHero = null;
@@ -217,12 +218,14 @@ namespace NamNPC
                         transform.position += direction * (2f / utilZom.edadZombi);
                         utilZom = gameObject.GetComponent<Zombi>().utilZom;
                         Debug.Log("waaarrrr quiero comer " + utilZom.queComer);
-                        mens.mensZombi.text = "waarr quiero comer " + utilZom.queComer;
+                        //mens.mensZombi.text = "waarr quiero comer " + utilZom.queComer;
+                        buscCanvas.GetComponent<Generator>().mensZombi.text= "waarr quiero comer " + utilZom.queComer;
                     }
                     else
                     {
                         movimiento();
-                    } 
+                        //buscCanvas.GetComponent<Generator>().mensZombi.text = "";
+                    }
                 }
 
                 //Vector3 myVector = playerObject.transform.position - transform.position;
@@ -274,27 +277,14 @@ namespace NamNPC
                 Gizmos.DrawLine(transform.position, transform.position + direction);
             }
 
-            //IEnumerator cambioEstado()
-            //{
-            //    while (true)
-            //    {
-            //        if (utilZom.estado == (DatosZom.Estados)0)
-            //        {
-            //            utilZom.estado = (DatosZom.Estados)1;
-            //            cambiaMov = Random.Range(0, 4);
-            //        }
-            //        else if (utilZom.estado == (DatosZom.Estados)1)
-            //        {
-            //            utilZom.estado = (DatosZom.Estados)2;
-            //        }
-            //        else
-            //        {
-            //            utilZom.estado = (DatosZom.Estados)0;
-            //            cambiaRot = Random.Range(0, 2);
-            //        }
-            //        yield return new WaitForSeconds(3);
-            //    }
-            //}
+            IEnumerator ResetMens()
+            {
+                while (true)
+                {
+                    buscCanvas.GetComponent<Generator>().mensZombi.text = "";
+                    yield return new WaitForSeconds(2);
+                }
+            }
         }
         public struct DatosZom
         {

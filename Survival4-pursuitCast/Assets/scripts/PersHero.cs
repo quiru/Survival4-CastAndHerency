@@ -10,6 +10,12 @@ public class PersHero : MonoBehaviour
     NamNPC.NamAlly.DatosCiud utilCiu;
     System.Random rnd = new System.Random();
     public readonly float velhero;
+    GameObject buscaCanvas;
+
+    void Awake()
+    {
+        buscaCanvas = GameObject.Find("GameObject");
+    }
     public PersHero()
     {
         velhero = rnd.Next(1, 4);
@@ -27,6 +33,7 @@ public class PersHero : MonoBehaviour
         {
             utilCiu = colision.gameObject.GetComponent<NamNPC.NamAlly.Ciudadano>().utilCiud;
             Debug.Log("hola soy " + utilCiu.varNombrs + " y tengo " + utilCiu.edadCiudd);
+            buscaCanvas.GetComponent<Generator>().mensZombi.text = "hola soy " + utilCiu.varNombrs + " y tengo " + utilCiu.edadCiudd;
         }
     }
 }
