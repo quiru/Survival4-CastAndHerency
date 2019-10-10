@@ -4,49 +4,40 @@ using UnityEngine;
 
 public class CompHerencia : MonoBehaviour
 {
-    States estados;
-    int cambiaRot;
-    int cambiaMov;
-    float velRandom;
+    States estados; //var tipo enum para manejar los estados
+    int cambiaRot; //var para cambiar la direccion de la rotacion
+    int cambiaMov; //var para cambiar la direccion del movimiento
+    float velRandom; //var para dar velocidad
 
     void Awake()
     {
-        cambiaMov = Random.Range(0, 4);
-        
-        cambiaRot = Random.Range(0, 3);
+        cambiaMov = Random.Range(0, 4); //inicia las variables con un valor random 
+        cambiaRot = Random.Range(0, 2);
     }
 
     void Start()
     {
-        int daEstado = Random.Range(1, 4);
-        estados = (States)daEstado;
-
-        //StartCoroutine("CambioEstado");
+        int daEstado = Random.Range(1, 4); //random para dar un estado
+        estados = (States)daEstado; //da estado a la variable
     }
 
-    
-    void Update()
-    {
-        
-    }
-
-    public void movimiento()
+    public void movimiento() //funcion para generar comportamiento
     {
         velRandom = Random.Range(1f, 2f);
-        switch (estados)
+        switch (estados) //switch para moverse segun el estado
         {
-            case States.rotating:
-                if (cambiaRot == 0)
+            case States.rotating: //si el estado es rotating
+                if (cambiaRot == 0) //rota hacia una direccion 
                 {
                     transform.eulerAngles += new Vector3(0, 0.5f, 0);
                 }
-                else
+                else //si no rota hacia la otra
                 {
                     transform.eulerAngles -= new Vector3(0, 0.5f, 0);
                 }
                 break;
-            case States.moving:
-                if (cambiaMov == 0)
+            case States.moving: //si el estado es moving
+                if (cambiaMov == 0) //se mueve hacia alguna direccion  dependiendo de cambiaMov 
                 {
                     transform.position += new Vector3(0, 0, velRandom * Time.deltaTime);
                 }
@@ -63,20 +54,20 @@ public class CompHerencia : MonoBehaviour
                     transform.position += new Vector3(velRandom * Time.deltaTime, 0, 0);
                 }
                 break;
-            case States.idle:
+            case States.idle: //si el estado es idle se queda quieto
                 transform.position += new Vector3(0, 0, 0);
                 break;
         }
     }
 
-    IEnumerator CambioEstado()
+    IEnumerator CambioEstado() //corrutina para cambiar de estado
     {
         while (true)
         {
             if (estados == (States)0)
             {
                 estados = (States)1;
-                cambiaMov = Random.Range(0, 4);
+                cambiaMov = Random.Range(0, 4); //cambia la variable para cambiar la direccion del movimiento
             }
             else if (estados == (States)1)
             {
@@ -85,16 +76,14 @@ public class CompHerencia : MonoBehaviour
             else
             {
                 estados = (States)0;
-                cambiaRot = Random.Range(0, 2);
+                cambiaRot = Random.Range(0, 2); //cambia la variable para cambiar la direccion del movimiento
             }
-
-
             yield return new WaitForSeconds(3);
         }
     }
 }
 
-public enum States
+public enum States //enum de estados
 {
     rotating, moving, idle 
 }
